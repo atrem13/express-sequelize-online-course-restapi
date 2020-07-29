@@ -14,6 +14,7 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 require('./routes/news.routes')(app, express);
+require('./routes/member.routes')(app, express);
 // app.listen(8000, () => {
 //   console.log(`Server started on port 8000`);
 // });
