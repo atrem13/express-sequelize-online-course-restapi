@@ -17,6 +17,8 @@ require('./routes/news.routes')(app, express);
 require('./routes/member.routes')(app, express);
 require('./routes/testimonial.routes')(app, express);
 require('./routes/kategori_course.routes')(app, express);
+require('./routes/mentor.routes')(app, express);
+require('./routes/event.routes')(app, express);
 // app.listen(8000, () => {
 //   console.log(`Server started on port 8000`);
 // });

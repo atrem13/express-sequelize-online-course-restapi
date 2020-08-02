@@ -11,7 +11,7 @@ module.exports = (sequelize, DataTypes) => {
     // associations can be defined here
     testimonial.belongsTo(models.member, {
       foreignKey: 'member_id',
-      as: 'member'
+      as: 'Member'
     });
   };
   return testimonial;

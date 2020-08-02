@@ -19,7 +19,7 @@ self.save = (req, res) => {
 self.getAll = (req, res) => {
     testimonial.findAll({
         include:[
-            'member'
+            'mMmber'
         ]
     }).then((data) => {
         if(data.length > 0){
@@ -35,7 +35,7 @@ self.getAll = (req, res) => {
 self.get = (req, res) => {
     testimonial.findOne({
         include:[
-            'member'
+            'Member'
         ],
         where: {
             id: req.params.testimonial_id

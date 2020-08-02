@@ -10,7 +10,9 @@ module.exports = (sequelize, DataTypes) => {
     // associations can be defined here
     member.hasMany(models.testimonial, {
       foreignKey: 'member_id',
-      as: 'testimonials'
+      as: 'Testimonials',
+      onDelete: 'cascade',
+      hooks: true
     });
   };
   return member;

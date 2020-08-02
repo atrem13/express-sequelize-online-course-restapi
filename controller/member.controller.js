@@ -16,7 +16,11 @@ self.save = (req, res) => {
 };
 
 self.getAll = (req, res) => {
-  member.findAll({}).then((data) => {
+  member.findAll({
+    include: [
+      'Testimonial'
+    ]
+  }).then((data) => {
     if(data.length > 0){
       rs(res, data);
     }else{
@@ -31,7 +35,10 @@ self.get = (req, res) => {
   member.findOne({
     where:{
       id: req.params.member_id
-    }
+    },
+    include: [
+      'Testimonial'
+    ]
   }).then((data) => {
     if(data){
       rs(res, data);
