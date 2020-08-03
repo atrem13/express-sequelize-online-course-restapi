@@ -25,6 +25,12 @@ module.exports = (sequelize, DataTypes) => {
       onDelete: 'cascade',
       hooks: true
     });
+    kategori_course.hasMany(models.course, {
+      foreignKey: 'kategori_course_id',
+      as: 'Courses',
+      onDelete: 'set null',
+      hooks: true
+    });
   };
   return kategori_course;
 };

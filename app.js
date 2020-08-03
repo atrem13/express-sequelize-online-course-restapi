@@ -5,6 +5,8 @@ const logger = require('morgan');
 const cors = require('cors');
 
 const app = express();
+global.__basedir = __dirname;
+
 
 app.use(logger('dev'));
 app.use(express.json());
@@ -19,6 +21,8 @@ require('./routes/testimonial.routes')(app, express);
 require('./routes/kategori_course.routes')(app, express);
 require('./routes/mentor.routes')(app, express);
 require('./routes/event.routes')(app, express);
+require('./routes/course.routes')(app, express);
+require('./routes/uploadimage.routes')(app, express);
 // app.listen(8000, () => {
 //   console.log(`Server started on port 8000`);
 // });
