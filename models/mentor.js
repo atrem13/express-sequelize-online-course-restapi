@@ -3,7 +3,8 @@ module.exports = (sequelize, DataTypes) => {
   const mentor = sequelize.define('mentor', {
     name: DataTypes.STRING,
     desc: DataTypes.TEXT,
-    img: DataTypes.STRING
+    img: DataTypes.STRING,
+    data_image: DataTypes.BLOB
   }, {
     tableName: 'mentors'
   });
