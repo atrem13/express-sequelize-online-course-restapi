@@ -1,25 +1,28 @@
 const {mentor, Sequelize} = require('../models/index');
 const fs = require('fs');
 const {rs, re} = require('./function/rr_function');
+const {getDataImage, createAndUnlink, deleteDataImage} = require('./function/upload_image.function');
 
 let self = {};
 
 self.save = (req, res) => {
     if(req.file.filename){
-        req.body.data_image = fs.readFileSync(
-            __basedir + '/resource/static/assets/tmp/' + req.file.filename
-        );
-        req.body.img = req.file.filename;
+        getDataImage(req, fs);
+        // req.body.data_image = fs.readFileSync(
+        //     __basedir + '/resource/static/assets/tmp/' + req.file.filename
+        // );
+        // req.body.img = req.file.filename;
     }
     mentor.create(req.body).then((data) => {
         if(data){
             if(req.file.filename){
-                fs.writeFileSync(
-                    __basedir + '/resource/static/assets/mentors/' + req.file.filename, data.data_image
-                );
-                fs.unlinkSync(
-                    __basedir + '/resource/static/assets/tmp/' + req.file.filename
-                );
+                createAndUnlink(req, fs, 'mentors', data);
+                // fs.writeFileSync(
+                //     __basedir + '/resource/static/assets/mentors/' + req.file.filename, data.data_image
+                // );
+                // fs.unlinkSync(
+                //     __basedir + '/resource/static/assets/tmp/' + req.file.filename
+                // );
             }
             if(req.body.kategori_courses){
                 data.setKategoriCourses(req.body.kategori_courses).then((result) => {
@@ -77,16 +80,22 @@ self.get = (req, res) => {
 };
 
 self.update = (req, res) => {
+    var oldImg = '';
+    mentor.findByPk(req.params.mentor_id,{}).then((oldData) => {
+        oldImg = oldData.img;
+    });
     if(req.file.filename){
-        mentor.findByPk(req.params.mentor_id,{}).then((oldData) => {
-            fs.unlinkSync(
-                __basedir + '/resource/static/assets/mentors/' + oldData.img
-            );
-        });
-        req.body.data_image = fs.readFileSync(
-            __basedir + '/resource/static/assets/tmp/' + req.file.filename
-        );
-        req.body.img = req.file.filename;
+        getDataImage(req, fs);
+
+        // mentor.findByPk(req.params.mentor_id,{}).then((oldData) => {
+        //     fs.unlinkSync(
+        //         __basedir + '/resource/static/assets/mentors/' + oldData.img
+        //     );
+        // });
+        // req.body.data_image = fs.readFileSync(
+        //     __basedir + '/resource/static/assets/tmp/' + req.file.filename
+        // );
+        // req.body.img = req.file.filename;
     }
     mentor.update(req.body, {
         where:{
@@ -96,12 +105,16 @@ self.update = (req, res) => {
         if(data){
             mentor.findByPk(req.params.mentor_id, {}).then((updateData) => {
                 if(req.file.filename){
-                    fs.writeFileSync(
-                        __basedir + '/resource/static/assets/mentors/' + req.file.filename, updateData.data_image
-                    );
-                    fs.unlinkSync(
-                        __basedir + '/resource/static/assets/tmp/' + req.file.filename
-                    );
+                    if(oldImg){
+                        deleteDataImage(fs, 'mentors', oldImg);
+                    }
+                    createAndUnlink(req, fs, 'mentors', updateData);
+                    // fs.writeFileSync(
+                    //     __basedir + '/resource/static/assets/mentors/' + req.file.filename, updateData.data_image
+                    // );
+                    // fs.unlinkSync(
+                    //     __basedir + '/resource/static/assets/tmp/' + req.file.filename
+                    // );
                 }
                 updateData.setKategoriCourses(req.body.kategori_courses).then((result) => {
                     if(result){
@@ -120,22 +133,28 @@ self.update = (req, res) => {
 };
 
 self.delete = (req, res) => {
-    let oldImg = '';
+    var oldImg = '';
     mentor.findByPk(req.params.mentor_id,{}).then((oldData) => {
         oldImg = oldData.img;
-        // fs.unlinkSync(
-        //     __basedir + '/resource/static/assets/mentors/' + oldData.img
-        // );
     });
+    // mentor.findByPk(req.params.mentor_id,{}).then((oldData) => {
+    //     oldImg = oldData.img;
+    //     // fs.unlinkSync(
+    //     //     __basedir + '/resource/static/assets/mentors/' + oldData.img
+    //     // );
+    // });
     mentor.destroy({
         where:{
             id:req.params.mentor_id
         }
     }).then((data) => {
         if(data){
-            fs.unlinkSync(
-                __basedir + '/resource/static/assets/mentors/' + oldImg
-            );
+            if(oldImg){
+                deleteDataImage(fs, 'mentors', oldImg);
+            }
+            // fs.unlinkSync(
+            //     __basedir + '/resource/static/assets/mentors/' + oldImg
+            // );
             rs(res, data);
         }else{
             re(res, false, 400, 'fail to delete mentor');

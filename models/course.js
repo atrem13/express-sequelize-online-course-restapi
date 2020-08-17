@@ -7,7 +7,8 @@ module.exports = (sequelize, DataTypes) => {
     icon: DataTypes.STRING,
     total_member: DataTypes.INTEGER,
     price: DataTypes.INTEGER,
-    status: DataTypes.INTEGER
+    status: DataTypes.INTEGER,
+    data_image: DataTypes.BLOB
   }, {
     tableName: 'courses'
   });

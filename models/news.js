@@ -4,7 +4,8 @@ module.exports = (sequelize, DataTypes) => {
     title: DataTypes.STRING,
     publish_date: DataTypes.DATE,
     desc: DataTypes.TEXT,
-    img: DataTypes.STRING
+    img: DataTypes.STRING,
+    data_image: DataTypes.BLOB
   }, {
     tableName: 'news'
   });

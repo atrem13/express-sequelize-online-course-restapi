@@ -4,7 +4,8 @@ module.exports = (sequelize, DataTypes) => {
     name: DataTypes.STRING,
     motto: DataTypes.STRING,
     genre: DataTypes.INTEGER,
-    img: DataTypes.STRING
+    img: DataTypes.STRING,
+    data_image: DataTypes.BLOB
   }, {});
   member.associate = function(models) {
     // associations can be defined here
